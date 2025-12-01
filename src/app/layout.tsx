@@ -1,0 +1,45 @@
+import './globals.css';
+
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+
+import { QueryProvider } from '@features/layout/model';
+
+const geistSans = Geist({
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+});
+
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+});
+
+export const metadata: Metadata = {
+  title: 'Next App',
+  description: 'Next app',
+};
+
+const RootLayout = ({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) => {
+  return (
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <QueryProvider>
+          <div className="bg-background text-foreground flex min-h-screen flex-col">
+            <header></header>
+            <main className="flex-1">{children}</main>
+            <footer></footer>
+          </div>
+        </QueryProvider>
+      </body>
+    </html>
+  );
+};
+
+export default RootLayout;
