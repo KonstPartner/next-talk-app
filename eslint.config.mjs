@@ -48,7 +48,7 @@ export default defineConfig([
           groups: [
             ['^\\u0000'],
             ['^react$', '^react-dom$', '^@?\\w'],
-            ['^@features(/.*)?$', '^@entities(/.*)?$'],
+            ['^@features(/.*)?$', '^@entities(/.*)?$', '^@pages(/.*)?$'],
             ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
             ['^\\./(?!/?$)', '^\\./?$'],
           ],

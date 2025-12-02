@@ -15,17 +15,18 @@
 }
 
 :root.dark {
-  --background: #0a0a0a;
-  --background-secondary: #0f172a;
-  --foreground: #e5e7eb;
-  --muted: #1e293b;
-  --border: #334155;
+  --background: #0b0b0f;
+  --background-secondary: #1a1a22;
+  --foreground: #ededf5;
 
-  --primary: #1d4ed8;
-  --primary-hover: #1e40af;
-  --primary-foreground: #e2e8f0;
+  --muted: #2a2a35;
+  --border: #3f3f4d;
 
-  --icon: #94a3b8;
+  --primary: #8b5cf6;
+  --primary-hover: #7c3aed;
+  --primary-foreground: #f5f3ff;
+
+  --icon: #c4b5fd;
 }
 
 @theme inline {
@@ -49,6 +50,6 @@ body {
 
 @layer utilities {
   .container {
-    @apply flex max-w-[1440px] flex-col gap-10 px-3;
+    @apply mx-auto flex max-w-[1440px] flex-col gap-10 px-3;
   }
 }
