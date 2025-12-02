@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
 import { QueryProvider } from '@features/layout/model';
+import { Header } from '@entities/header';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -31,8 +32,8 @@ const RootLayout = ({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <QueryProvider>
-          <div className="bg-background text-foreground flex min-h-screen flex-col">
-            <header></header>
+          <div className="bg-background text-foreground flex min-h-screen flex-col items-center">
+            <Header />
             <main className="flex-1">{children}</main>
             <footer></footer>
           </div>
