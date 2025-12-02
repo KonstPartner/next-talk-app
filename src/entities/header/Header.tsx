@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Menu } from 'lucide-react';
 
+import { AuthButton } from '@features/auth/ui';
 import { ToggleTheme } from '@features/theme/ui';
 import Logo from '@entities/header/Logo';
 import NavBar from '@entities/header/NavBar';
@@ -19,6 +20,7 @@ const Header = () => {
           <div className="hidden items-center gap-4 md:flex">
             <NavBar />
             <ToggleTheme />
+            <AuthButton />
           </div>
 
           <button
