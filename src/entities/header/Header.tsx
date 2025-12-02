@@ -11,7 +11,7 @@ const Header = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   return (
-    <header className="border-border sticky z-40 w-full border-b">
+    <header className="bg-background border-border sticky top-0 z-40 w-full border-b">
       <section className="container">
         <div className="flex items-center justify-between py-4">
           <Logo />

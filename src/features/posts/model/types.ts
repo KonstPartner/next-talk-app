@@ -10,3 +10,8 @@ export type Post = {
   views: number;
   userId: number;
 };
+
+export type PostsResponse = {
+  data: Post[];
+  total?: number;
+};

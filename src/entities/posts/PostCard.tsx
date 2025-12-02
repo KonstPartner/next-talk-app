@@ -5,7 +5,7 @@ import ImagePlaceholder from '@entities/posts/ImagePlaceholder';
 
 const PostCard = ({ post }: { post: Post }) => {
   return (
-    <article className="border-border bg-background-secondary hover:bg-muted cursor-pointer overflow-hidden rounded-xl border shadow-sm transition hover:shadow-md">
+    <article className="border-border bg-background-secondary cursor-pointer overflow-hidden rounded-xl border shadow-sm transition hover:shadow-md">
       <ImagePlaceholder />
 
       <div className="p-6">
