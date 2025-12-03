@@ -15,3 +15,9 @@ export type PostsResponse = {
   data: Post[];
   total?: number;
 };
+
+export type PostFormValues = {
+  title: string;
+  body: string;
+  tags: string;
+};

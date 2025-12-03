@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import { useLogin } from '@features/auth/api';
 import {
@@ -44,6 +45,7 @@ const useLoginForm = () => {
 
     login(user);
     router.back();
+    toast.success('User has been logged in');
   });
 
   return {
