@@ -1,10 +1,16 @@
 import {
+  InfiniteData,
   useSuspenseInfiniteQuery,
   useSuspenseQuery,
 } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { postsApi } from '@features/posts/api/postsApi';
+import {
+  Post,
+  PostsResponse,
+  ToggleReactionPayload,
+} from '@features/posts/model';
 
 export const useInfinitePosts = () => {
   return useSuspenseInfiniteQuery(postsApi.getInfinitePostsOptions());
@@ -55,6 +61,42 @@ export const useDeletePost = () => {
     mutationFn: postsApi.deletePost,
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [postsApi.baseKey, 'infinite'] });
+    },
+  });
+};
+
+export const useToggleReaction = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: [postsApi.baseKey, 'toggleReaction'],
+    mutationFn: (payload: ToggleReactionPayload) =>
+      postsApi.toggleReaction(payload),
+
+    onSuccess: ({ updatedPost }) => {
+      queryClient.setQueryData<InfiniteData<PostsResponse>>(
+        [postsApi.baseKey, 'infinite'],
+        (old) => {
+          if (!old) {
+            return old;
+          }
+
+          return {
+            ...old,
+            pages: old.pages.map((page) => ({
+              ...page,
+              data: page.data.map((p) =>
+                p.id === updatedPost.id ? updatedPost : p
+              ),
+            })),
+          };
+        }
+      );
+
+      queryClient.setQueryData<Post>(
+        [postsApi.baseKey, 'byId', updatedPost.id],
+        updatedPost
+      );
     },
   });
 };

@@ -35,7 +35,7 @@ const RootLayout = ({
         <QueryProvider>
           <div className="bg-background text-foreground flex min-h-screen flex-col items-center">
             <Header />
-            <main className="flex w-full grow">{children}</main>
+            <main className="flex w-full grow py-3">{children}</main>
             <footer></footer>
           </div>
           <ToastProvider />

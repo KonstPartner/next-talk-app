@@ -5,13 +5,20 @@ import {
   queryOptions,
 } from '@tanstack/react-query';
 
+import { getUserEndpoint } from '@features/auth/api';
+import { User } from '@features/auth/model';
 import {
   API_POSTS_PATH,
   getPostEndpoint,
   getPostsPageEndpoint,
   POSTS_LIMIT,
 } from '@features/posts/api/constants';
-import type { Post, PostsResponse } from '@features/posts/model/types';
+import type {
+  Post,
+  PostsResponse,
+  ToggleReactionPayload,
+  ToggleReactionResult,
+} from '@features/posts/model/types';
 import { localApi } from '@features/shared/model';
 
 export const postsApi = {
@@ -76,4 +83,72 @@ export const postsApi = {
     localApi<void>(getPostEndpoint(id), {
       method: 'DELETE',
     }),
+
+  toggleReaction: async ({
+    post,
+    user,
+    action,
+  }: ToggleReactionPayload): Promise<ToggleReactionResult> => {
+    const liked = user.likedPosts ?? [];
+    const disliked = user.dislikedPosts ?? [];
+
+    const hasLiked = liked.includes(post.id);
+    const hasDisliked = disliked.includes(post.id);
+
+    let nextLiked = liked;
+    let nextDisliked = disliked;
+    let likes = post.reactions.likes;
+    let dislikes = post.reactions.dislikes;
+
+    const removeFrom = (arr: number[]): number[] =>
+      arr.filter((id) => id !== post.id);
+
+    if (action === 'like') {
+      if (hasLiked) {
+        nextLiked = removeFrom(liked);
+        likes = Math.max(0, likes - 1);
+      } else {
+        nextLiked = [...liked, post.id];
+        likes += 1;
+
+        if (hasDisliked) {
+          nextDisliked = removeFrom(disliked);
+          dislikes = Math.max(0, dislikes - 1);
+        }
+      }
+    } else {
+      if (hasDisliked) {
+        nextDisliked = removeFrom(disliked);
+        dislikes = Math.max(0, dislikes - 1);
+      } else {
+        nextDisliked = [...disliked, post.id];
+        dislikes += 1;
+
+        if (hasLiked) {
+          nextLiked = removeFrom(liked);
+          likes = Math.max(0, likes - 1);
+        }
+      }
+    }
+
+    const updatedPost = await localApi<Post>(getPostEndpoint(post.id), {
+      method: 'PATCH',
+      json: {
+        reactions: {
+          likes,
+          dislikes,
+        },
+      },
+    });
+
+    const updatedUser = await localApi<User>(getUserEndpoint(user.id), {
+      method: 'PATCH',
+      json: {
+        likedPosts: nextLiked,
+        dislikedPosts: nextDisliked,
+      },
+    });
+
+    return { updatedPost, updatedUser };
+  },
 };

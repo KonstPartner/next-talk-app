@@ -1,3 +1,5 @@
+import { User } from '@features/auth/model';
+
 export type Post = {
   id: number;
   title: string;
@@ -20,4 +22,15 @@ export type PostFormValues = {
   title: string;
   body: string;
   tags: string;
+};
+
+export type ToggleReactionPayload = {
+  post: Post;
+  user: User;
+  action: 'like' | 'dislike';
+};
+
+export type ToggleReactionResult = {
+  updatedPost: Post;
+  updatedUser: User;
 };
