@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import { useRegister } from '@features/auth/api';
 import {
@@ -52,6 +53,7 @@ const useRegisterForm = () => {
 
     login(user);
     router.back();
+    toast.success('User has been registered');
   };
 
   return {

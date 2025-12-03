@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
 import { QueryProvider } from '@features/layout/model';
+import { ToastProvider } from '@features/shared/ui';
 import { Header } from '@entities/header';
 
 const geistSans = Geist({
@@ -37,6 +38,7 @@ const RootLayout = ({
             <main className="flex w-full grow">{children}</main>
             <footer></footer>
           </div>
+          <ToastProvider />
         </QueryProvider>
       </body>
     </html>
