@@ -13,6 +13,7 @@ const ToggleTheme = () => {
         onClick={() => handleThemeChange('light')}
         className={buttonClasses('light')}
         aria-label="Use light theme"
+        title="Light theme"
       >
         <Sun className="h-4 w-4" />
       </button>
@@ -21,6 +22,7 @@ const ToggleTheme = () => {
         onClick={() => handleThemeChange('dark')}
         className={buttonClasses('dark')}
         aria-label="Use dark theme"
+        title="Dark theme"
       >
         <Moon className="h-4 w-4" />
       </button>
@@ -29,6 +31,7 @@ const ToggleTheme = () => {
         onClick={() => handleThemeChange('system')}
         className={buttonClasses('system')}
         aria-label="Use system theme"
+        title="System theme"
       >
         <Monitor className="h-4 w-4" />
       </button>

@@ -14,7 +14,7 @@ export const authApi = {
 
     return await localApi<User>(USERS_PATH, {
       method: 'POST',
-      json: payload,
+      json: { ...payload, likedPosts: [], dislikedPosts: [] },
     });
   },
 
@@ -30,6 +30,6 @@ export const authApi = {
       throw new Error('Invalid username or password');
     }
 
-    return user;
+    return { likedPosts: [], dislikedPosts: [], ...user };
   },
 };

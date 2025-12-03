@@ -1,14 +1,15 @@
 export type AuthMode = 'login' | 'register';
 
-export type User = {
+export type User = AuthCredentialsDto & {
   id: number;
-  username: string;
-  password: string;
 };
 
 export type AuthCredentialsDto = {
   username: string;
   password: string;
+
+  likedPosts?: number[];
+  dislikedPosts?: number[];
 };
 
 export type RegisterPayload = AuthCredentialsDto & {

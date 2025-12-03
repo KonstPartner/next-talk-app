@@ -1,7 +1,7 @@
-import { Eye, ThumbsDown, ThumbsUp } from 'lucide-react';
+import { Eye } from 'lucide-react';
 
 import { Post } from '@features/posts/model';
-import { PostOptions } from '@features/posts/ui';
+import { PostOptions, ToggleReaction } from '@features/posts/ui';
 import ImagePlaceholder from '@entities/posts/ImagePlaceholder';
 
 const PostCard = ({ post }: { post: Post }) => {
@@ -30,15 +30,7 @@ const PostCard = ({ post }: { post: Post }) => {
           </div>
 
           <div className="text-foreground/70 flex items-center gap-6 text-sm">
-            <div className="flex items-center gap-1">
-              <ThumbsUp className="text-icon h-4 w-4" />
-              {post.reactions.likes}
-            </div>
-
-            <div className="flex items-center gap-1">
-              <ThumbsDown className="text-icon h-4 w-4" />
-              {post.reactions.dislikes}
-            </div>
+            <ToggleReaction post={post} />
 
             <div className="flex items-center gap-1">
               <Eye className="text-icon h-4 w-4" />
