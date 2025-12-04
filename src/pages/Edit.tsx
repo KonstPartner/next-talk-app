@@ -17,7 +17,7 @@ const EditPost = () => {
   }
 
   return (
-    <div className="container py-6">
+    <div className="container">
       <Loader>
         <EditPostSection id={id} />
       </Loader>

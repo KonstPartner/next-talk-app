@@ -1,4 +1,5 @@
 import { Eye } from 'lucide-react';
+import Link from 'next/link';
 
 import { Post } from '@features/posts/model';
 import { PostOptions, ToggleReaction } from '@features/posts/ui';
@@ -7,7 +8,9 @@ import ImagePlaceholder from '@entities/posts/ImagePlaceholder';
 const PostCard = ({ post }: { post: Post }) => {
   return (
     <article className="border-border bg-background-secondary cursor-pointer overflow-hidden rounded-xl border shadow-sm transition hover:shadow-md">
-      <ImagePlaceholder />
+      <Link href={`/posts/${post.id}`}>
+        <ImagePlaceholder />
+      </Link>
       <div className="flex items-end justify-between p-6">
         <div>
           <h2 className="text-foreground mb-3 text-2xl font-semibold">

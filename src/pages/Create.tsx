@@ -3,15 +3,15 @@
 import Link from 'next/link';
 
 import { useAuth } from '@features/auth/model';
-import CreatePostForm from '@features/posts/ui/CreatePostForm';
+import { CreatePostForm } from '@features/posts/ui';
 
 const CreatePost = () => {
   const { user } = useAuth();
 
   if (!user) {
     return (
-      <section className="container flex min-h-[60vh] items-center justify-center">
-        <div className="border-border bg-background-secondary mx-auto max-w-md rounded-xl border p-6 text-center shadow-sm">
+      <section className="container">
+        <div className="border-border bg-background-secondary mx-auto rounded-xl border p-6 text-center shadow-sm">
           <h1 className="text-foreground mb-2 text-xl font-semibold">
             Sign in required
           </h1>
