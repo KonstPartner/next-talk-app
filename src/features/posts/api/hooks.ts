@@ -8,12 +8,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postsApi } from '@features/posts/api/postsApi';
 import {
   Post,
+  PostSort,
   PostsResponse,
   ToggleReactionPayload,
 } from '@features/posts/model';
 
-export const useInfinitePosts = () => {
-  return useSuspenseInfiniteQuery(postsApi.getInfinitePostsOptions());
+export const useInfinitePosts = (sort: PostSort) => {
+  return useSuspenseInfiniteQuery(postsApi.getInfinitePostsOptions(sort));
 };
 
 export const useSuspensePost = (id: number) => {

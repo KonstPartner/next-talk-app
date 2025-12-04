@@ -30,6 +30,7 @@ const CreatePostForm = () => {
       },
       views: 0,
       userId: user!.id,
+      createdAt: new Date().toISOString(),
     });
 
     toast.success('Post has been created');

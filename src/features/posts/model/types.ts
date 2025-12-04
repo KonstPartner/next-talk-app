@@ -11,6 +11,7 @@ export type Post = {
   };
   views: number;
   userId: number;
+  createdAt: string;
 };
 
 export type PostsResponse = {
@@ -34,3 +35,5 @@ export type ToggleReactionResult = {
   updatedPost: Post;
   updatedUser: User;
 };
+
+export type PostSort = 'new' | 'popular';

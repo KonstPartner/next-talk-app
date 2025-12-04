@@ -1,14 +1,18 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { useInfinitePosts } from '@features/posts/api';
+import { PostSort } from '@features/posts/model';
 import { PostList } from '@entities/posts';
+import { SortToggle } from '@entities/posts/';
 
 const Posts = () => {
+  const [sort, setSort] = useState<PostSort>('new');
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfinitePosts();
+    useInfinitePosts(sort);
 
   const { ref, inView } = useInView({
     threshold: 0,
@@ -39,6 +43,8 @@ const Posts = () => {
 
   return (
     <div className="mx-auto w-5/6 lg:w-4/6">
+      <SortToggle value={sort} onChange={setSort} />
+
       {posts.length === 0 && (
         <div className="text-foreground/60">No posts yet.</div>
       )}
