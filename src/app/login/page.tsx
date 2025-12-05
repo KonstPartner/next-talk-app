@@ -1,4 +1,4 @@
-import Auth from '@pages/Auth';
+import Auth from '@screens/Auth';
 
 const AuthPage = () => {
   return <Auth />;
