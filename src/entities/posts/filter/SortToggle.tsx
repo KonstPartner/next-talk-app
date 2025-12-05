@@ -2,12 +2,13 @@
 
 import { PostSort } from '@features/posts/model';
 
-type SortToggleProps = {
+const SortToggle = ({
+  value,
+  onChange,
+}: {
   value: PostSort;
   onChange: (value: PostSort) => void;
-};
-
-const SortToggle = ({ value, onChange }: SortToggleProps) => {
+}) => {
   return (
     <div className="mb-4 flex items-center justify-between gap-3">
       <h1 className="text-foreground text-2xl font-bold">Posts</h1>

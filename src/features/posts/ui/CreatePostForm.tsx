@@ -14,27 +14,26 @@ const CreatePostForm = () => {
   const { mutateAsync, isPending, error } = useCreatePost();
 
   const handleSubmit = async (values: PostFormValues) => {
-    const tagsArray =
-      values.tags
-        ?.split(',')
-        .map((t) => t.trim())
-        .filter(Boolean) ?? [];
+    if (!user) {
+      toast.error('You must be logged in to create a post');
+
+      return;
+    }
 
     await mutateAsync({
       title: values.title,
       body: values.body,
-      tags: tagsArray,
+      tagIds: values.tags,
       reactions: {
         likes: 0,
         dislikes: 0,
       },
       views: 0,
-      userId: user!.id,
+      userId: user.id,
       createdAt: new Date().toISOString(),
     });
 
     toast.success('Post has been created');
-
     router.push('/');
   };
 

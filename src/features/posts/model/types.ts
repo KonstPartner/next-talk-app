@@ -4,7 +4,7 @@ export type Post = {
   id: number;
   title: string;
   body: string;
-  tags: string[];
+  tagIds: number[];
   reactions: {
     likes: number;
     dislikes: number;
@@ -22,7 +22,7 @@ export type PostsResponse = {
 export type PostFormValues = {
   title: string;
   body: string;
-  tags: string;
+  tags: number[];
 };
 
 export type ToggleReactionPayload = {
@@ -37,3 +37,8 @@ export type ToggleReactionResult = {
 };
 
 export type PostSort = 'new' | 'popular';
+
+export type PostsFilters = {
+  search: string;
+  tagIds: number[];
+};

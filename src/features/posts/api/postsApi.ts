@@ -15,6 +15,7 @@ import {
 } from '@features/posts/api/constants';
 import type {
   Post,
+  PostsFilters,
   PostSort,
   PostsResponse,
   ToggleReactionPayload,
@@ -25,12 +26,12 @@ import { localApi } from '@features/shared/model';
 export const postsApi = {
   baseKey: 'posts',
 
-  getInfinitePostsOptions: (sort: PostSort) =>
+  getInfinitePostsOptions: (sort: PostSort, filters: PostsFilters) =>
     infiniteQueryOptions({
-      queryKey: [postsApi.baseKey, 'infinite', sort],
+      queryKey: [postsApi.baseKey, 'infinite', sort, filters],
       queryFn: async ({ pageParam = 1, signal }) =>
         localApi<PostsResponse>(
-          getPostsPageEndpoint(pageParam, POSTS_LIMIT, sort),
+          getPostsPageEndpoint(pageParam, POSTS_LIMIT, sort, filters),
           { signal }
         ),
       initialPageParam: 1,

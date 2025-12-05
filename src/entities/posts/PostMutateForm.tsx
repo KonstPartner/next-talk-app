@@ -3,6 +3,8 @@
 import { useForm } from 'react-hook-form';
 
 import { PostFormValues } from '@features/posts/model';
+import { useSuspenseTags } from '@features/tags/api';
+import { TagSelector } from '@features/tags/ui';
 import { Button, Input } from '@entities/shared';
 
 type PostMutateFormProps = {
@@ -20,24 +22,38 @@ const PostMutateForm = ({
   isPending = false,
   serverError,
 }: PostMutateFormProps) => {
+  const { tags: allTags } = useSuspenseTags();
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    watch,
+    setValue,
   } = useForm<PostFormValues>({
     mode: 'onBlur',
     defaultValues: {
       title: initialValues?.title ?? '',
       body: initialValues?.body ?? '',
-      tags: initialValues?.tags ?? '',
+      tags: initialValues?.tags ?? [],
     },
   });
+
+  const selectedTagIds = watch('tags') ?? [];
+
+  const handleToggleTag = (id: number) => {
+    const current = watch('tags') ?? [];
+    const exists = current.includes(id);
+    const next = exists ? current.filter((x) => x !== id) : [...current, id];
+
+    setValue('tags', next, { shouldDirty: true });
+  };
 
   const submitHandler = handleSubmit(async (values) => {
     const trimmed = {
       title: values.title.trim(),
       body: values.body.trim(),
-      tags: values.tags.trim(),
+      tags: values.tags,
     };
 
     if (!trimmed.title || !trimmed.body) {
@@ -109,19 +125,13 @@ const PostMutateForm = ({
         )}
       </div>
 
-      <div className="flex flex-col gap-1">
-        <label htmlFor="tags" className="text-foreground text-sm font-medium">
-          Tags
-        </label>
-        <Input
-          id="tags"
-          placeholder="e.g. news, tech, personal"
-          {...register('tags')}
-        />
-        <p className="text-foreground/60 text-xs">
-          Separate tags with commas (e.g. <code>news, tech, opinion</code>)
-        </p>
-      </div>
+      <TagSelector
+        tags={allTags}
+        selectedTagIds={selectedTagIds}
+        onToggle={handleToggleTag}
+        label="Tags"
+        helperText="Choose one or more tags for this post."
+      />
 
       <Button
         type="submit"

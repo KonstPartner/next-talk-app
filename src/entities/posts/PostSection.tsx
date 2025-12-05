@@ -1,13 +1,15 @@
-'use client';
-
 import { Eye } from 'lucide-react';
 
 import { useSuspensePost } from '@features/posts/api';
 import { ToggleReaction } from '@features/posts/ui';
-import ImagePlaceholder from '@entities/posts/ImagePlaceholder';
+import { useTagMap } from '@features/tags/model';
+import { ImagePlaceholder } from '@entities/posts';
 
 const PostSection = ({ id }: { id: number }) => {
   const { data: post } = useSuspensePost(id);
+  const { tagMap } = useTagMap();
+
+  const tags = post.tagIds.map((cid) => tagMap.get(cid)).filter(Boolean);
 
   return (
     <section className="container py-10">
@@ -30,14 +32,14 @@ const PostSection = ({ id }: { id: number }) => {
           <p>{post.body}</p>
         </div>
 
-        {post.tags.length > 0 && (
+        {tags.length > 0 && (
           <div className="mt-6 flex flex-wrap gap-2">
-            {post.tags.map((tag) => (
+            {tags.map((tag) => (
               <span
-                key={tag}
+                key={tag!.id}
                 className="bg-primary/10 text-primary rounded-full px-3 py-1 text-xs font-medium"
               >
-                #{tag}
+                {tag!.name}
               </span>
             ))}
           </div>

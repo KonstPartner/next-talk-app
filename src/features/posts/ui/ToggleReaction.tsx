@@ -4,10 +4,14 @@ import { toast } from 'react-toastify';
 
 import { useAuth } from '@features/auth/model';
 import { useToggleReaction } from '@features/posts/api';
-import { Post } from '@features/posts/model';
+import { Post, usePostsFilters } from '@features/posts/model';
 
 const ToggleReaction = ({ post }: { post: Post }) => {
-  const { mutate, isPending: isToggling } = useToggleReaction();
+  const { sort, appliedFilters } = usePostsFilters();
+  const { mutate, isPending: isToggling } = useToggleReaction(
+    sort,
+    appliedFilters
+  );
   const { user, login } = useAuth();
   const router = useRouter();
 

@@ -1,4 +1,5 @@
 import { ButtonHTMLAttributes } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: 'primary' | 'outline';
@@ -22,7 +23,7 @@ const Button = ({
   return (
     <button
       {...props}
-      className={`${base} ${variants[variant]} ${className}`}
+      className={twMerge(base, variants[variant], className)}
     />
   );
 };

@@ -18,21 +18,15 @@ const EditPostForm = ({ post }: EditPostFormProps) => {
   const initialValues: PostFormValues = {
     title: post.title,
     body: post.body,
-    tags: post.tags.join(', '),
+    tags: post.tagIds,
   };
 
   const handleSubmit = async (values: PostFormValues) => {
-    const tagsArray =
-      values.tags
-        ?.split(',')
-        .map((t) => t.trim())
-        .filter(Boolean) ?? [];
-
     await mutateAsync({
       ...post,
       title: values.title,
       body: values.body,
-      tags: tagsArray,
+      tagIds: values.tags,
     });
 
     toast.success('Post has been updated');
