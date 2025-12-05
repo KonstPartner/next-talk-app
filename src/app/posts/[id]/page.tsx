@@ -1,4 +1,4 @@
-import Post from '@pages/Post';
+import Post from '@screens/Post';
 
 const PostPage = () => {
   return <Post />;

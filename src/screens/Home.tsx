@@ -1,7 +1,12 @@
 'use client';
 
-import { PostsSection } from '@features/posts/ui';
+import dynamic from 'next/dynamic';
+
 import { Loader } from '@features/shared/ui';
+
+const PostsSection = dynamic(() => import('@features/posts/ui/PostsSection'), {
+  ssr: false,
+});
 
 const Home = () => {
   return (

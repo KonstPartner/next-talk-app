@@ -1,4 +1,4 @@
-import CreatePost from '@pages/Create';
+import CreatePost from '@screens/Create';
 
 const PostCreatePage = () => {
   return <CreatePost />;

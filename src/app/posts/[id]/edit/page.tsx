@@ -1,4 +1,4 @@
-import EditPost from '@pages/Edit';
+import EditPost from '@screens/Edit';
 
 const PostEditPage = () => {
   return <EditPost />;
