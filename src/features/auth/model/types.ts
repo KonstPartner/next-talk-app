@@ -10,6 +10,8 @@ export type AuthCredentialsDto = {
 
   likedPosts?: number[];
   dislikedPosts?: number[];
+
+  viewedPosts?: number[];
 };
 
 export type RegisterPayload = AuthCredentialsDto & {

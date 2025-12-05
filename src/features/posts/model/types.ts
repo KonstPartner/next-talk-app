@@ -42,3 +42,14 @@ export type PostsFilters = {
   search: string;
   tagIds: number[];
 };
+
+export type MarkViewedPayload = {
+  postId: number;
+  currentViews: number;
+  userId?: number;
+};
+
+export type MarkViewedResult = {
+  updatedPost: Post;
+  updatedUser?: User;
+};
