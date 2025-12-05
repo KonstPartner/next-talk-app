@@ -42,7 +42,7 @@ const PostsSection = () => {
   const posts = data?.pages.flatMap((page) => page.data) ?? [];
 
   return (
-    <div className="mx-auto w-5/6 space-y-6 lg:w-4/6">
+    <section className="mx-auto w-5/6 space-y-6 lg:w-4/6">
       <PostFilters tags={tags} />
 
       {posts.length === 0 && (
@@ -65,7 +65,7 @@ const PostsSection = () => {
           Loading more...
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

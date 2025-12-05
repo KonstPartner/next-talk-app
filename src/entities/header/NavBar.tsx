@@ -1,12 +1,13 @@
 import { NAV_LINKS } from '@features/layout/model';
 import NavLink from '@entities/header/NavLink';
 
-type NavBarProps = {
+const NavBar = ({
+  orientation = 'horizontal',
+  onNavigate,
+}: {
   orientation?: 'horizontal' | 'vertical';
   onNavigate?: () => void;
-};
-
-const NavBar = ({ orientation = 'horizontal', onNavigate }: NavBarProps) => {
+}) => {
   const isVertical = orientation === 'vertical';
 
   return (

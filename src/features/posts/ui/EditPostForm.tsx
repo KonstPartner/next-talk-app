@@ -3,16 +3,13 @@
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
-import { useUpdatePost } from '@features/posts/api/hooks';
-import type { Post, PostFormValues } from '@features/posts/model';
+import { useSuspensePost, useUpdatePost } from '@features/posts/api/hooks';
+import type { PostFormValues } from '@features/posts/model';
 import PostMutateForm from '@entities/posts/PostMutateForm';
 
-type EditPostFormProps = {
-  post: Post;
-};
-
-const EditPostForm = ({ post }: EditPostFormProps) => {
+const EditPostForm = ({ id }: { id: number }) => {
   const router = useRouter();
+  const { data: post } = useSuspensePost(id);
   const { mutateAsync, isPending, error } = useUpdatePost();
 
   const initialValues: PostFormValues = {

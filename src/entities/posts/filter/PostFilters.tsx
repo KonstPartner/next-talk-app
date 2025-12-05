@@ -13,7 +13,7 @@ export const PostFilters = ({ tags }: { tags: Tag[] }) => {
   const { applyFilters } = usePostsFilters();
 
   return (
-    <div className="flex flex-col gap-6 p-3">
+    <section className="flex flex-col gap-6 p-3">
       <div className="flex gap-3">
         <div className="flex grow flex-col gap-3">
           <SearchControls />
@@ -33,7 +33,7 @@ export const PostFilters = ({ tags }: { tags: Tag[] }) => {
       <div className="flex justify-end">
         <SortControls />
       </div>
-    </div>
+    </section>
   );
 };
 

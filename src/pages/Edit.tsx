@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 
 import { useAuth } from '@features/auth/model';
-import EditPostSection from '@features/posts/ui/EditPostSection';
+import { EditPostForm } from '@features/posts/ui';
 import { Loader } from '@features/shared/ui';
 
 const EditPost = () => {
@@ -19,7 +19,7 @@ const EditPost = () => {
   return (
     <div className="container">
       <Loader>
-        <EditPostSection id={id} />
+        <EditPostForm id={id} />
       </Loader>
     </div>
   );

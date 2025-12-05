@@ -74,7 +74,7 @@ export const useDeletePost = () => {
   });
 };
 
-export const useToggleReaction = (sort: PostSort, filters: PostsFilters) => {
+export const useApiToggleReaction = (sort: PostSort, filters: PostsFilters) => {
   const queryClient = useQueryClient();
 
   const stableFilters: PostsFilters = {

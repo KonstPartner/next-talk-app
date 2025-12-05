@@ -22,7 +22,7 @@ const TagSelector = ({
   helperText,
   className,
 }: TagSelectorProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenMenu, setIsOpenMenu] = useState(false);
 
   const selectedTags = useMemo(
     () => tags.filter((t) => selectedTagIds.includes(t.id)),
@@ -41,7 +41,7 @@ const TagSelector = ({
 
       <button
         type="button"
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={() => setIsOpenMenu((prev) => !prev)}
         className={`border-border bg-background text-foreground/85 transition, flex w-full cursor-pointer items-center justify-between rounded-md border px-3 py-2 text-xs font-medium ${className}`}
       >
         <span className="text-foreground/40">
@@ -52,14 +52,14 @@ const TagSelector = ({
             </span>
           )}
         </span>
-        {isOpen ? (
+        {isOpenMenu ? (
           <ChevronUp className="text-foreground/70 h-4 w-4" />
         ) : (
           <ChevronDown className="text-foreground/70 h-4 w-4" />
         )}
       </button>
 
-      {!isOpen && selectedTags.length > 0 && (
+      {!isOpenMenu && selectedTags.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {selectedTags.map((tag) => (
             <button
@@ -74,7 +74,7 @@ const TagSelector = ({
         </div>
       )}
 
-      {isOpen && (
+      {isOpenMenu && (
         <div className="flex flex-wrap gap-2">
           {tags.map((tag) => {
             const active = selectedTagIds.includes(tag.id);

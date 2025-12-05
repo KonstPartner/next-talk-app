@@ -1,6 +1,6 @@
 'use client';
 
-import { useSuspenseTags } from '../api';
+import { useSuspenseTags } from '@features/tags/api';
 
 const useTagMap = () => {
   const { tags } = useSuspenseTags();

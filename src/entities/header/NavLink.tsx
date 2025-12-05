@@ -4,13 +4,15 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { MouseEventHandler } from 'react';
 
-type NavLinkProps = {
+const NavLink = ({
+  href,
+  label,
+  onClick,
+}: {
   href: string;
   label: string;
   onClick?: MouseEventHandler<HTMLAnchorElement>;
-};
-
-const NavLink = ({ href, label, onClick }: NavLinkProps) => {
+}) => {
   const pathname = usePathname();
   const isActive = pathname === href;
 
