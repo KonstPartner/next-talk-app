@@ -7,6 +7,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { postsApi } from '@features/posts/api/postsApi';
 import {
+  MarkViewedPayload,
+  MarkViewedResult,
   Post,
   PostsFilters,
   PostSort,
@@ -90,6 +92,41 @@ export const useApiToggleReaction = (sort: PostSort, filters: PostsFilters) => {
     onSuccess: ({ updatedPost }) => {
       queryClient.setQueryData<InfiniteData<PostsResponse>>(
         [postsApi.baseKey, 'infinite', sort, stableFilters],
+        (old) => {
+          if (!old) {
+            return old;
+          }
+
+          return {
+            ...old,
+            pages: old.pages.map((page) => ({
+              ...page,
+              data: page.data.map((p) =>
+                p.id === updatedPost.id ? updatedPost : p
+              ),
+            })),
+          };
+        }
+      );
+
+      queryClient.setQueryData<Post>(
+        [postsApi.baseKey, 'byId', updatedPost.id],
+        updatedPost
+      );
+    },
+  });
+};
+
+export const useMarkPostViewed = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<MarkViewedResult, Error, MarkViewedPayload>({
+    mutationKey: [postsApi.baseKey, 'markViewed'],
+    mutationFn: (payload) => postsApi.markPostViewed(payload),
+
+    onSuccess: ({ updatedPost }) => {
+      queryClient.setQueriesData<InfiniteData<PostsResponse, unknown>>(
+        { queryKey: [postsApi.baseKey, 'infinite'] },
         (old) => {
           if (!old) {
             return old;

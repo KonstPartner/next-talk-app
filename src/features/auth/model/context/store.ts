@@ -1,34 +1,55 @@
 'use client';
 
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 
-import type { User } from '@features/auth/model/types';
+import { User } from '@features/auth/model/types';
+
+const AUTH_STORAGE_KEY = 'talk_app_user';
 
 type AuthState = {
   user: User | null;
   isHydrated: boolean;
+  hydrate: () => void;
   login: (user: User) => void;
   logout: () => void;
 };
 
-const AUTH_STORAGE_KEY = 'talk_app_user';
+export const useAuthStore = create<AuthState>((set) => ({
+  user: null,
+  isHydrated: false,
 
-export const useAuthStore = create<AuthState>()(
-  persist(
-    (set) => ({
-      user: null,
-      isHydrated: false,
-      login: (user) => set({ user }),
-      logout: () => set({ user: null }),
-    }),
-    {
-      name: AUTH_STORAGE_KEY,
-      onRehydrateStorage: () => (state) => {
-        if (state) {
-          state.isHydrated = true;
-        }
-      },
+  hydrate: () => {
+    if (typeof window === 'undefined') {
+      return;
     }
-  )
-);
+
+    try {
+      const raw = window.localStorage.getItem(AUTH_STORAGE_KEY);
+      if (!raw) {
+        set({ user: null, isHydrated: true });
+
+        return;
+      }
+
+      const parsed = JSON.parse(raw) as User;
+      set({ user: parsed, isHydrated: true });
+    } catch {
+      window.localStorage.removeItem(AUTH_STORAGE_KEY);
+      set({ user: null, isHydrated: true });
+    }
+  },
+
+  login: (user) => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+    }
+    set({ user });
+  },
+
+  logout: () => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem(AUTH_STORAGE_KEY);
+    }
+    set({ user: null });
+  },
+}));

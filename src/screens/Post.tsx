@@ -2,8 +2,8 @@
 
 import { useParams } from 'next/navigation';
 
+import { PostSection } from '@features/posts/ui';
 import { Loader } from '@features/shared/ui';
-import { PostSection } from '@entities/posts';
 
 const Post = () => {
   const params = useParams();

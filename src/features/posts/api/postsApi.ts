@@ -14,6 +14,8 @@ import {
   POSTS_LIMIT,
 } from '@features/posts/api/constants';
 import type {
+  MarkViewedPayload,
+  MarkViewedResult,
   Post,
   PostsFilters,
   PostSort,
@@ -148,6 +150,39 @@ export const postsApi = {
       json: {
         likedPosts: nextLiked,
         dislikedPosts: nextDisliked,
+      },
+    });
+
+    return { updatedPost, updatedUser };
+  },
+
+  markPostViewed: async ({
+    postId,
+    currentViews,
+    userId,
+  }: MarkViewedPayload): Promise<MarkViewedResult> => {
+    const updatedPost = await localApi<Post>(getPostEndpoint(postId), {
+      method: 'PATCH',
+      json: {
+        views: currentViews + 1,
+      },
+    });
+
+    if (!userId) {
+      return { updatedPost };
+    }
+
+    const user = await localApi<User>(getUserEndpoint(userId));
+    const viewed = Array.isArray(user.viewedPosts) ? user.viewedPosts : [];
+
+    if (viewed.includes(postId)) {
+      return { updatedPost, updatedUser: user };
+    }
+
+    const updatedUser = await localApi<User>(getUserEndpoint(userId), {
+      method: 'PATCH',
+      json: {
+        viewedPosts: [...viewed, postId],
       },
     });
 

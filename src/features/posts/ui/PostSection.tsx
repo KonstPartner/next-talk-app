@@ -1,15 +1,51 @@
+'use client';
+
+import { useEffect, useRef } from 'react';
 import { Eye } from 'lucide-react';
 
-import { useSuspensePost } from '@features/posts/api';
+import { useAuth } from '@features/auth/model';
+import { useMarkPostViewed, useSuspensePost } from '@features/posts/api';
 import { ToggleReaction } from '@features/posts/ui';
 import { useTagMap } from '@features/tags/model';
 import { ImagePlaceholder } from '@entities/posts';
 
 const PostSection = ({ id }: { id: number }) => {
+  const { user, login } = useAuth();
   const { data: post } = useSuspensePost(id);
   const { tagMap } = useTagMap();
+  const { mutate } = useMarkPostViewed();
+  const hasMarkedRef = useRef(false);
 
   const tags = post.tagIds.map((cid) => tagMap.get(cid)).filter(Boolean);
+  const postId = post.id;
+  const currentViews = post.views;
+  const userId = user?.id ?? null;
+
+  useEffect(() => {
+    if (hasMarkedRef.current) {
+      return;
+    }
+
+    hasMarkedRef.current = true;
+
+    mutate(
+      {
+        postId,
+        currentViews,
+        userId: userId ?? undefined,
+      },
+      {
+        onSuccess: ({ updatedUser }) => {
+          if (updatedUser) {
+            login(updatedUser);
+          }
+        },
+        onError: () => {
+          hasMarkedRef.current = false;
+        },
+      }
+    );
+  }, [postId, currentViews, userId, mutate, login]);
 
   return (
     <section className="container py-10">
