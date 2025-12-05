@@ -4,11 +4,15 @@ import { useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { useInfinitePosts } from '@features/posts/api';
-import { PostList } from '@entities/posts';
+import { usePostsFilters } from '@features/posts/model';
+import { useSuspenseTags } from '@features/tags/api';
+import { PostFilters, PostList } from '@entities/posts';
 
-const Posts = () => {
+const PostsSection = () => {
+  const { tags } = useSuspenseTags();
+  const { sort, appliedFilters } = usePostsFilters();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfinitePosts();
+    useInfinitePosts(sort, appliedFilters);
 
   const { ref, inView } = useInView({
     threshold: 0,
@@ -38,9 +42,11 @@ const Posts = () => {
   const posts = data?.pages.flatMap((page) => page.data) ?? [];
 
   return (
-    <div className="mx-auto w-5/6 lg:w-4/6">
+    <section className="mx-auto w-5/6 space-y-6 lg:w-4/6">
+      <PostFilters tags={tags} />
+
       {posts.length === 0 && (
-        <div className="text-foreground/60">No posts yet.</div>
+        <div className="text-foreground/60">No posts found.</div>
       )}
 
       {posts.length > 0 && <PostList posts={posts} />}
@@ -59,8 +65,8 @@ const Posts = () => {
           Loading more...
         </div>
       )}
-    </div>
+    </section>
   );
 };
 
-export default Posts;
+export default PostsSection;

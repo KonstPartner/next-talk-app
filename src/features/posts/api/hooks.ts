@@ -8,12 +8,21 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postsApi } from '@features/posts/api/postsApi';
 import {
   Post,
+  PostsFilters,
+  PostSort,
   PostsResponse,
   ToggleReactionPayload,
 } from '@features/posts/model';
 
-export const useInfinitePosts = () => {
-  return useSuspenseInfiniteQuery(postsApi.getInfinitePostsOptions());
+export const useInfinitePosts = (sort: PostSort, filters: PostsFilters) => {
+  const stableFilters: PostsFilters = {
+    search: filters.search.trim(),
+    tagIds: [...filters.tagIds].sort(),
+  };
+
+  return useSuspenseInfiniteQuery(
+    postsApi.getInfinitePostsOptions(sort, stableFilters)
+  );
 };
 
 export const useSuspensePost = (id: number) => {
@@ -65,8 +74,13 @@ export const useDeletePost = () => {
   });
 };
 
-export const useToggleReaction = () => {
+export const useApiToggleReaction = (sort: PostSort, filters: PostsFilters) => {
   const queryClient = useQueryClient();
+
+  const stableFilters: PostsFilters = {
+    search: filters.search.trim(),
+    tagIds: [...filters.tagIds].sort(),
+  };
 
   return useMutation({
     mutationKey: [postsApi.baseKey, 'toggleReaction'],
@@ -75,7 +89,7 @@ export const useToggleReaction = () => {
 
     onSuccess: ({ updatedPost }) => {
       queryClient.setQueryData<InfiniteData<PostsResponse>>(
-        [postsApi.baseKey, 'infinite'],
+        [postsApi.baseKey, 'infinite', sort, stableFilters],
         (old) => {
           if (!old) {
             return old;

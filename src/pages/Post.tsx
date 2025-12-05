@@ -2,27 +2,20 @@
 
 import { useParams } from 'next/navigation';
 
-import { useAuth } from '@features/auth/model';
-import { EditPostForm } from '@features/posts/ui';
 import { Loader } from '@features/shared/ui';
+import { PostSection } from '@entities/posts';
 
-const EditPost = () => {
-  const { user } = useAuth();
+const Post = () => {
   const params = useParams();
-
   const id = Number(params?.id);
-
-  if (!user) {
-    return null;
-  }
 
   return (
     <div className="container">
       <Loader>
-        <EditPostForm id={id} />
+        <PostSection id={id} />
       </Loader>
     </div>
   );
 };
 
-export default EditPost;
+export default Post;
