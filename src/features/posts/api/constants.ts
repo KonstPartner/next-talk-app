@@ -42,3 +42,9 @@ export const getPostsPageEndpoint = (
 };
 
 export const getPostEndpoint = (id: number) => `${API_POSTS_PATH}/${id}`;
+
+export const getPostsByIds = (ids: number[]) => {
+  const search = ids.map((id) => `id=${id}`).join('&');
+
+  return `${API_POSTS_PATH}?${search}`;
+};

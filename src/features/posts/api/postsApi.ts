@@ -10,6 +10,7 @@ import { User } from '@features/auth/model';
 import {
   API_POSTS_PATH,
   getPostEndpoint,
+  getPostsByIds,
   getPostsPageEndpoint,
   POSTS_LIMIT,
 } from '@features/posts/api/constants';
@@ -188,4 +189,17 @@ export const postsApi = {
 
     return { updatedPost, updatedUser };
   },
+
+  getPostsByIdsOptions: (ids: number[]) =>
+    queryOptions({
+      queryKey: [postsApi.baseKey, 'byIds', ids],
+      queryFn: ({ signal }) => {
+        if (!ids.length) {
+          return Promise.resolve([] as Post[]);
+        }
+
+        return localApi<Post[]>(getPostsByIds(ids), { signal });
+      },
+      staleTime: 1000 * 60 * 5,
+    }),
 };

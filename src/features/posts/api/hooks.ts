@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from 'react';
 import {
   InfiniteData,
   useSuspenseInfiniteQuery,
@@ -5,6 +6,8 @@ import {
 } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { getUserEndpoint } from '@features/auth/api';
+import { useAuth, User } from '@features/auth/model';
 import { postsApi } from '@features/posts/api/postsApi';
 import {
   MarkViewedPayload,
@@ -14,7 +17,9 @@ import {
   PostSort,
   PostsResponse,
   ToggleReactionPayload,
+  useViewedPostsStore,
 } from '@features/posts/model';
+import { localApi } from '@features/shared/model';
 
 export const useInfinitePosts = (sort: PostSort, filters: PostsFilters) => {
   const stableFilters: PostsFilters = {
@@ -78,6 +83,8 @@ export const useDeletePost = () => {
 
 export const useApiToggleReaction = (sort: PostSort, filters: PostsFilters) => {
   const queryClient = useQueryClient();
+  const { login } = useAuth();
+  const { upsertPosts } = useViewedPostsStore();
 
   const stableFilters: PostsFilters = {
     search: filters.search.trim(),
@@ -89,7 +96,7 @@ export const useApiToggleReaction = (sort: PostSort, filters: PostsFilters) => {
     mutationFn: (payload: ToggleReactionPayload) =>
       postsApi.toggleReaction(payload),
 
-    onSuccess: ({ updatedPost }) => {
+    onSuccess: ({ updatedPost, updatedUser }) => {
       queryClient.setQueryData<InfiniteData<PostsResponse>>(
         [postsApi.baseKey, 'infinite', sort, stableFilters],
         (old) => {
@@ -113,18 +120,26 @@ export const useApiToggleReaction = (sort: PostSort, filters: PostsFilters) => {
         [postsApi.baseKey, 'byId', updatedPost.id],
         updatedPost
       );
+
+      upsertPosts([updatedPost]);
+
+      if (updatedUser) {
+        login(updatedUser);
+      }
     },
   });
 };
 
 export const useMarkPostViewed = () => {
   const queryClient = useQueryClient();
+  const { login } = useAuth();
+  const { upsertPosts } = useViewedPostsStore();
 
   return useMutation<MarkViewedResult, Error, MarkViewedPayload>({
     mutationKey: [postsApi.baseKey, 'markViewed'],
     mutationFn: (payload) => postsApi.markPostViewed(payload),
 
-    onSuccess: ({ updatedPost }) => {
+    onSuccess: ({ updatedPost, updatedUser }) => {
       queryClient.setQueriesData<InfiniteData<PostsResponse, unknown>>(
         { queryKey: [postsApi.baseKey, 'infinite'] },
         (old) => {
@@ -148,6 +163,75 @@ export const useMarkPostViewed = () => {
         [postsApi.baseKey, 'byId', updatedPost.id],
         updatedPost
       );
+
+      upsertPosts([updatedPost]);
+
+      if (updatedUser) {
+        login(updatedUser);
+      }
+    },
+  });
+};
+
+export const useViewedPostsHistory = () => {
+  const { user } = useAuth();
+  const viewedIds = (user?.viewedPosts ?? []).slice().reverse();
+
+  const { posts, upsertPosts } = useViewedPostsStore();
+
+  const { data } = useSuspenseQuery({
+    ...postsApi.getPostsByIdsOptions(viewedIds),
+  });
+
+  useEffect(() => {
+    if (data && data.length) {
+      upsertPosts(data);
+    }
+  }, [data, upsertPosts]);
+
+  const historyPosts: Post[] = useMemo(
+    () =>
+      viewedIds
+        .map((id) => posts.find((p) => p.id === id))
+        .filter((p): p is Post => Boolean(p)),
+    [posts, viewedIds]
+  );
+
+  return {
+    posts: historyPosts,
+  };
+};
+
+export const useClearViewedHistory = () => {
+  const { user, login } = useAuth();
+  const { clear } = useViewedPostsStore();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: [postsApi.baseKey, 'clearViewedHistory', user?.id],
+    mutationFn: async () => {
+      if (!user) {
+        return;
+      }
+
+      const updatedUser = await localApi<User>(getUserEndpoint(user.id), {
+        method: 'PATCH',
+        json: { viewedPosts: [] },
+      });
+
+      return updatedUser;
+    },
+    onSuccess: (updatedUser) => {
+      if (updatedUser) {
+        login(updatedUser);
+      }
+
+      clear();
+
+      queryClient.invalidateQueries({
+        queryKey: [postsApi.baseKey, 'byId'],
+        exact: false,
+      });
     },
   });
 };

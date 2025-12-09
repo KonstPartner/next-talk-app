@@ -14,14 +14,13 @@ export const authApi = {
 
     return await localApi<User>(USERS_PATH, {
       method: 'POST',
-      json: { ...payload, likedPosts: [], dislikedPosts: [] },
+      json: { ...payload, likedPosts: [], dislikedPosts: [], viewedPosts: [] },
     });
   },
 
   login: async (payload: AuthCredentialsDto): Promise<User> => {
     const users = await localApi<User[]>(getUserByUsername(payload.username));
     const user = users[0];
-
     if (!user) {
       throw new Error('User with this username does not exist');
     }

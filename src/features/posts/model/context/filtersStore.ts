@@ -6,12 +6,9 @@ import type { PostsFilters, PostSort } from '@features/posts/model';
 
 type FiltersState = {
   sort: PostSort;
-
   searchDraft: string;
   selectedTagIdsDraft: number[];
-
   appliedFilters: PostsFilters;
-
   setSort: (sort: PostSort) => void;
   setSearchDraft: (value: string) => void;
   toggleTagDraft: (id: number) => void;
@@ -21,10 +18,8 @@ type FiltersState = {
 
 export const usePostsFiltersStore = create<FiltersState>((set, get) => ({
   sort: 'new',
-
   searchDraft: '',
   selectedTagIdsDraft: [],
-
   appliedFilters: {
     search: '',
     tagIds: [],
