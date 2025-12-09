@@ -7,6 +7,7 @@ import { useAuth } from '@features/auth/model';
 import { CommentsSection } from '@features/comments/ui';
 import { useMarkPostViewed, useSuspensePost } from '@features/posts/api';
 import { ToggleReaction } from '@features/posts/ui';
+import { Loader } from '@features/shared/ui';
 import { useTagMap } from '@features/tags/model';
 import { ImagePlaceholder } from '@entities/posts';
 
@@ -89,7 +90,9 @@ const PostSection = ({ id }: { id: number }) => {
             </div>
           </footer>
         </article>
-        <CommentsSection postId={post.id} />
+        <Loader>
+          <CommentsSection postId={post.id} />
+        </Loader>
       </div>
     </section>
   );

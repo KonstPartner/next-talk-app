@@ -4,22 +4,21 @@ import { useForm } from 'react-hook-form';
 
 import { Button } from '@entities/shared';
 
-type CommentFormValues = {
-  body: string;
-};
-
-type CommentFormProps = {
+const CommentForm = ({
+  onSubmit,
+  isSubmitting = false,
+}: {
   onSubmit: (body: string) => Promise<void> | void;
   isSubmitting?: boolean;
-};
-
-const CommentForm = ({ onSubmit, isSubmitting = false }: CommentFormProps) => {
+}) => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting: rhfSubmitting },
-  } = useForm<CommentFormValues>({
+  } = useForm<{
+    body: string;
+  }>({
     defaultValues: {
       body: '',
     },

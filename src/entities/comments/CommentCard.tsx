@@ -7,16 +7,15 @@ import type { PostComment } from '@features/comments/model/types';
 import { DeleteComment, LikeComment } from '@features/comments/ui';
 import { useSuspenseUser } from '@features/users/api';
 
-type CommentCardProps = {
+const CommentCard = ({
+  comment,
+  postId,
+}: {
   comment: PostComment;
   postId: number;
-};
-
-const CommentCard = ({ comment, postId }: CommentCardProps) => {
+}) => {
   const { user: currentUser } = useAuth();
   const { user: author } = useSuspenseUser(comment.userId);
-
-  const isOwn = currentUser?.id === comment.userId;
 
   return (
     <article className="border-border bg-background-secondary flex gap-3 rounded-xl border px-4 py-3 text-sm shadow-sm">
@@ -35,7 +34,9 @@ const CommentCard = ({ comment, postId }: CommentCardProps) => {
       </div>
 
       <div className="text-foreground/60 flex flex-col items-center justify-end gap-3 text-[11px]">
-        {isOwn && <DeleteComment comment={comment} postId={postId} />}
+        {currentUser?.id === comment.userId && (
+          <DeleteComment comment={comment} postId={postId} />
+        )}
         <LikeComment comment={comment} postId={postId} />
       </div>
     </article>

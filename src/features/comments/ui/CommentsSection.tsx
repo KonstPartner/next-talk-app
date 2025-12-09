@@ -2,14 +2,10 @@
 
 import { useSuspenseComments } from '@features/comments/api/hooks';
 import CreateComment from '@features/comments/ui/CreateComment';
+import { Post } from '@features/posts/model';
 import { Loader } from '@features/shared/ui';
 import { CommentCard } from '@entities/comments';
-
-type CommentsSectionProps = {
-  postId: number;
-};
-
-const CommentsSection = ({ postId }: CommentsSectionProps) => {
+const CommentsSection = ({ postId }: { postId: Post['id'] }) => {
   const { comments } = useSuspenseComments(postId);
 
   return (
