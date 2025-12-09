@@ -225,6 +225,7 @@ export const useClearViewedHistory = () => {
       if (updatedUser) {
         login(updatedUser);
       }
+
       clear();
 
       queryClient.invalidateQueries({

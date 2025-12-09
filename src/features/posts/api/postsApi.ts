@@ -10,6 +10,7 @@ import { User } from '@features/auth/model';
 import {
   API_POSTS_PATH,
   getPostEndpoint,
+  getPostsByIds,
   getPostsPageEndpoint,
   POSTS_LIMIT,
 } from '@features/posts/api/constants';
@@ -197,9 +198,7 @@ export const postsApi = {
           return Promise.resolve([] as Post[]);
         }
 
-        const search = ids.map((id) => `id=${id}`).join('&');
-
-        return localApi<Post[]>(`${API_POSTS_PATH}?${search}`, { signal });
+        return localApi<Post[]>(getPostsByIds(ids), { signal });
       },
       staleTime: 1000 * 60 * 5,
     }),
