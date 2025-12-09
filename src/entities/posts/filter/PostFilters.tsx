@@ -14,21 +14,17 @@ export const PostFilters = ({ tags }: { tags: Tag[] }) => {
 
   return (
     <section className="flex flex-col gap-6 p-3">
-      <div className="flex gap-3">
-        <div className="flex grow flex-col gap-3">
-          <SearchControls />
-          {tags.length > 0 && <TagsControls tags={tags} />}
-        </div>
-        <div className="mt-9">
-          <Button
-            type="button"
-            onClick={applyFilters}
-            className="bg-primary text-primary-foreground hover:bg-primary/90 mt-5 inline-flex cursor-pointer items-center justify-center gap-2 rounded-md px-1 py-2 text-xs font-medium transition sm:px-4"
-          >
-            <SearchIcon className="h-4 w-4" />
-            <p className="hidden sm:block">Search</p>
-          </Button>
-        </div>
+      <div className="flex grow flex-col gap-3">
+        <SearchControls />
+        {tags.length > 0 && <TagsControls tags={tags} />}
+        <Button
+          type="button"
+          onClick={applyFilters}
+          className="bg-primary text-primary-foreground hover:bg-primary/90 mx-auto mt-5 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-md px-1 py-2 text-xs font-medium transition sm:px-4 md:w-1/3"
+        >
+          <SearchIcon className="h-4 w-4" />
+          <p>Search</p>
+        </Button>
       </div>
       <div className="flex justify-end">
         <SortControls />

@@ -15,7 +15,7 @@ const NavBar = ({
       <ul
         className={
           isVertical
-            ? 'flex flex-col gap-1 px-4 text-sm'
+            ? 'flex flex-col gap-4 px-4 text-sm'
             : 'flex items-center gap-3 text-sm font-medium'
         }
       >

@@ -31,24 +31,24 @@ const Header = () => {
             <Menu className="text-icon h-5 w-5" />
           </button>
         </div>
-
-        {isMobileOpen && (
-          <nav
-            id="mobile-nav"
-            aria-label="Main navigation"
-            className="bg-background/95 flex flex-col items-center gap-3 border-t py-3 md:hidden"
-          >
-            <div className="flex items-center justify-between px-4">
-              <ToggleTheme />
-            </div>
-            <NavBar
-              orientation="vertical"
-              onNavigate={() => setIsMobileOpen(false)}
-            />
-            <AuthButton />
-          </nav>
-        )}
       </section>
+
+      {isMobileOpen && (
+        <nav
+          id="mobile-nav"
+          aria-label="Main navigation"
+          className="bg-background/95 flex flex-col items-center gap-6 border-t py-3 md:hidden"
+        >
+          <div className="flex items-center justify-between px-4">
+            <ToggleTheme />
+          </div>
+          <NavBar
+            orientation="vertical"
+            onNavigate={() => setIsMobileOpen(false)}
+          />
+          <AuthButton />
+        </nav>
+      )}
     </header>
   );
 };

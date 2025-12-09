@@ -4,9 +4,9 @@ import { useAuth } from '@features/auth/model';
 import { Button } from '@entities/shared';
 
 const AuthButton = () => {
-  const { user, logout, isLoading } = useAuth();
+  const { user, logout, isHydrated } = useAuth();
 
-  if (isLoading) {
+  if (!isHydrated) {
     return null;
   }
 
