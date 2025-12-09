@@ -188,4 +188,19 @@ export const postsApi = {
 
     return { updatedPost, updatedUser };
   },
+
+  getPostsByIdsOptions: (ids: number[]) =>
+    queryOptions({
+      queryKey: [postsApi.baseKey, 'byIds', ids],
+      queryFn: ({ signal }) => {
+        if (!ids.length) {
+          return Promise.resolve([] as Post[]);
+        }
+
+        const search = ids.map((id) => `id=${id}`).join('&');
+
+        return localApi<Post[]>(`${API_POSTS_PATH}?${search}`, { signal });
+      },
+      staleTime: 1000 * 60 * 5,
+    }),
 };
