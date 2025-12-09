@@ -8,6 +8,7 @@ export type AuthCredentialsDto = {
   username: string;
   password: string;
 
+  likedComments?: number[];
   likedPosts?: number[];
   dislikedPosts?: number[];
 

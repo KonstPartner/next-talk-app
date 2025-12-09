@@ -12,7 +12,7 @@ const PostCard = ({ post }: { post: Post }) => {
   const tags = post.tagIds.map((id) => tagMap.get(id)).filter(Boolean);
 
   return (
-    <article className="border-border bg-background-secondary cursor-pointer overflow-hidden rounded-xl border shadow-sm transition hover:shadow-md">
+    <article className="border-border bg-background-secondary overflow-hidden rounded-xl border shadow-sm transition hover:shadow-md">
       <Link href={`/posts/${post.id}`}>
         <ImagePlaceholder />
       </Link>
