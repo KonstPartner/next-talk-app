@@ -52,5 +52,21 @@
       "npm run lint-fix",
       "npm run format"
     ]
+  },
+   "browserslist": {
+    "production": [
+      "last 2 Chrome versions",
+      "last 2 Firefox versions",
+      "last 2 Edge versions",
+      "last 2 Safari versions",
+      "not IE 11",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 Chrome version",
+      "last 1 Firefox version",
+      "last 1 Edge version",
+      "last 1 Safari version"
+    ]
   }
 }
