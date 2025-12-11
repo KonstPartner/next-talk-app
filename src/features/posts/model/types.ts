@@ -53,3 +53,9 @@ export type MarkViewedResult = {
   updatedPost: Post;
   updatedUser?: User;
 };
+
+export type PreviewPost = {
+  id: number;
+  title: string;
+  body: string;
+};
