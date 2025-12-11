@@ -25,10 +25,11 @@ const Header = () => {
 
           <button
             type="button"
+            aria-label="Toggle mobile navigation"
             onClick={() => setIsMobileOpen((v) => !v)}
             className="border-border bg-background-secondary text-foreground hover:bg-muted inline-flex items-center justify-center rounded-md border px-2 py-1 text-sm transition md:hidden"
           >
-            <Menu className="text-icon h-5 w-5" />
+            <Menu className="text-icon h-5 w-5" aria-hidden="true" />
           </button>
         </div>
       </section>

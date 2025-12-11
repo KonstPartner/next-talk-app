@@ -13,7 +13,7 @@ const PostCard = ({ post }: { post: Post }) => {
 
   return (
     <article className="border-border bg-background-secondary overflow-hidden rounded-xl border shadow-sm transition hover:shadow-md">
-      <Link href={`/posts/${post.id}`}>
+      <Link href={`/posts/${post.id}`} aria-label={`Open post: ${post.title}`}>
         <ImagePlaceholder />
       </Link>
       <div className="flex items-end justify-between p-6">
