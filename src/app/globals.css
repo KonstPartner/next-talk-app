@@ -53,3 +53,29 @@ body {
     @apply mx-auto flex max-w-[1440px] flex-col gap-10 px-3;
   }
 }
+
+@keyframes slide-in-out {
+  0% {
+    opacity: 0;
+    transform: translateX(40%);
+  }
+
+  10% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  90% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-40%);
+  }
+}
+
+.animate-slide-in-out {
+  animation: slide-in-out 10s ease-in-out;
+}
