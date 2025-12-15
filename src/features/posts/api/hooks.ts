@@ -175,21 +175,27 @@ export const useMarkPostViewed = () => {
 
 export const useViewedPostsHistory = () => {
   const { user } = useAuth();
-  const viewedIds = (user?.viewedPosts ?? []).slice().reverse();
-
   const { posts, upsertPosts } = useViewedPostsStore();
 
-  const { data } = useSuspenseQuery({
-    ...postsApi.getPostsByIdsOptions(viewedIds),
-  });
+  const viewedPosts = user?.viewedPosts;
+
+  const viewedIds = useMemo(() => {
+    if (!viewedPosts?.length) {
+      return [];
+    }
+
+    return [...viewedPosts].reverse();
+  }, [viewedPosts]);
+
+  const { data } = useSuspenseQuery(postsApi.getPostsByIdsOptions(viewedIds));
 
   useEffect(() => {
-    if (data && data.length) {
+    if (data?.length) {
       upsertPosts(data);
     }
   }, [data, upsertPosts]);
 
-  const historyPosts: Post[] = useMemo(
+  const historyPosts = useMemo(
     () =>
       viewedIds
         .map((id) => posts.find((p) => p.id === id))
@@ -205,7 +211,6 @@ export const useViewedPostsHistory = () => {
 export const useClearViewedHistory = () => {
   const { user, login } = useAuth();
   const { clear } = useViewedPostsStore();
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationKey: [postsApi.baseKey, 'clearViewedHistory', user?.id],
@@ -227,11 +232,6 @@ export const useClearViewedHistory = () => {
       }
 
       clear();
-
-      queryClient.invalidateQueries({
-        queryKey: [postsApi.baseKey, 'byId'],
-        exact: false,
-      });
     },
   });
 };

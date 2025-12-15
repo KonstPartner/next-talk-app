@@ -1,5 +1,6 @@
 'use client';
 
+import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 
 import { useAuth } from '@features/auth/model';
@@ -16,17 +17,21 @@ const ViewedHistory = () => {
   const { posts } = useViewedPostsHistory();
   const { mutateAsync: clearHistory, isPending } = useClearViewedHistory();
 
-  const handleClear = async () => {
-    await clearHistory();
-    toast.success('Viewing history has been cleared');
-  };
+  const handleClear = useCallback(async () => {
+    try {
+      await clearHistory();
+      toast.success('Viewing history has been cleared');
+    } catch {
+      toast.error('Failed to clear history');
+    }
+  }, [clearHistory]);
 
   if (!user) {
     return <AuthRedirectSection message="view your profile" />;
   }
 
   return (
-    <section className="border-border bg-background-secondary rounded-xl border px-4 py-5 shadow-sm">
+    <section className="border-border bg-background-secondary mx-auto w-5/6 space-y-6 rounded-xl border px-4 py-5 shadow-sm lg:w-4/6">
       <div className="mb-4 flex items-center justify-between gap-2">
         <h2 className="text-foreground text-lg font-semibold">Viewed posts</h2>
 
