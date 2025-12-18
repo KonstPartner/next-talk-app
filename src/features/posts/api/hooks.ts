@@ -195,7 +195,7 @@ export const useViewedPostsHistory = () => {
     }
   }, [data, upsertPosts]);
 
-  const historyPosts = useMemo(
+  const historyPosts: Post[] = useMemo(
     () =>
       viewedIds
         .map((id) => posts.find((p) => p.id === id))
