@@ -71,7 +71,7 @@ The app focuses on clean architecture, scalable state management, accessibility,
 Install dependencies:
 
 ```bash
-npm install
+  npm install
 ```
 
 ---
@@ -81,13 +81,13 @@ npm install
 Run the Next.js development server:
 
 ```bash
-npm run dev
+  npm run dev
 ```
 
 Application will be available at:
 
 ```
-http://localhost:3000
+  http://localhost:3000
 ```
 
 ---
@@ -97,13 +97,13 @@ http://localhost:3000
 Create a production build:
 
 ```bash
-npm run build
+  npm run build
 ```
 
 Start the production server:
 
 ```bash
-npm run start
+  npm run start
 ```
 
 ---
@@ -121,13 +121,13 @@ The application uses **json-server** as a mock backend for:
 Run local API:
 
 ```bash
-npm run api
+  npm run api
 ```
 
 API will be available at:
 
 ```
-http://localhost:4000
+  http://localhost:4000
 ```
 
 > ⚠️ **Important:**
