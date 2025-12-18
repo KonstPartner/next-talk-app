@@ -6,7 +6,7 @@ const NavigationMap = () => {
   const links = NAV_LINKS.filter((link) => link.href !== '/');
 
   return (
-    <section className="border-border bg-background-secondary/60 rounded-2xl border p-6">
+    <section className="border-border bg-background-secondary/60 flex flex-col gap-3 rounded-2xl border p-6">
       <h2 className="text-foreground text-lg font-semibold">
         Explore NextTalk
       </h2>

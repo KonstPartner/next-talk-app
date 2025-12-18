@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-import { useAuthStore } from '@features/auth/model/context/store';
+import { useAuthStore } from '@features/auth/model/context/authStore';
 
 export const useAuth = () => {
   const { user, isHydrated, hydrate, login, logout } = useAuthStore();
